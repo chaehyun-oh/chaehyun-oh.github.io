@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>draw number</title>
+    <style>
+        #container {
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        .btn {
+            border: 2px solid rgba(0, 0, 0, 0);
+            border-radius: 1.2rem;
+            box-sizing: border-box;
+            font-size: 1rem;
+            margin: 0 .5rem 2rem;
+            padding: .5rem 1rem;
+            cursor: pointer;
+            transition: .3s;
+        }
+
+        .btn:hover {
+            border: 2px solid rgb(255, 185, 79);
+            background-color: #fff;
+            color: rgb(241, 117, 45);
+        }
+
+        .ball {
+            width: 5rem;
+            height: 5rem;
+            margin: .5rem;
+            background-color: rgb(40, 170, 95);
+            border-radius: 50%;
+            color: #fff;
+            text-align: center;
+            line-height: 5rem;
+            font-size: 2rem;
+            font-weight: bold;
+        }
+
+        .ball-container {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 1.2rem;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="container">
+        <h1>로또 추천 번호</h1>
+        <button id="lotto-btn" class="btn">행운 번호 받기</button>
+        <button id="reset-btn" class="btn">초기화</button>
+        <div id="result"></div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/lodash@4.17.21/lodash.min.js"></script>
+    <script>
+        const button = document.querySelector('#lotto-btn');
+        const btnReset = document.querySelector('#reset-btn');
+
+        function drawNums(m) {
+            for (let n = 0; n < m; n++) {
+                console.log(n, m);
+            }
+            const ballContainer = document.createElement('div')
+            ballContainer.classList.add('ball-container')
+            // 공을 만들어서 =>  6개를 만들어서
+            const numbers = _.sampleSize(_.range(1, 46), 6)
+            // console.log(numbers)
+            for (let i = 0; i < 6; i++) {
+                const ball = document.createElement('div')
+                ball.classList.add('ball')
+                ball.innerText = numbers[i]
+
+                if (numbers[i] <= 10) {
+                    ball.style.backgroundColor = 'rgb(240,200,10)';
+                } else if (numbers[i] > 10 && numbers[i] <= 20) {
+                    ball.style.backgroundColor = 'rgb(50,100,180)';
+                } else if (numbers[i] > 20 && numbers[i] <= 30) {
+                    ball.style.backgroundColor = 'rgb(200,60,60)';
+                } else if (numbers[i] > 30 && numbers[i] <= 40) {
+                    ball.style.backgroundColor = 'rgb(100,100,100)';
+                };
+
+                // 컨테이너에 붙인다.
+                ballContainer.appendChild(ball);
+                // 컨테이너를 결과 영역에 붙인다. 
+                const result = document.querySelector('#result');
+                result.appendChild(ballContainer);
+            }
+        }
+
+        button.addEventListener('click', drawNums);
+
+        btnReset.addEventListener('click', function () {
+            const t = document.querySelectorAll('.ball-container');
+            if (t) {
+                for (let i = 0; i < t.length; i++) {
+                    t[i].remove();
+                }
+            }
+        })
+
+    </script>
+</body>
+
+</html>
